@@ -1,0 +1,57 @@
+<h1>NodeJS Forum</h1>
+<div>
+    <p>Username</p>
+    <input placeholder="Type your name here." id="user"></input>
+</div>
+<div>
+    <p>Title</p>
+    <input placeholder="Title of your input." id="title"></input>
+</div>
+<div>
+    <p>Content</p>
+    <textarea id="content"></textarea>
+</div>
+<br>
+<button id="submit">Submit</button>
+
+<script>
+    async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+    }
+    var data = {};
+    document.getElementById("submit").addEventListener("click", function() {
+        data = {
+            "user": document.getElementById('user').value,
+            "title": document.getElementById('title').value,
+            "content": document.getElementById('content').value
+        };
+        if(data.content.length == 0){
+            alert("No content!");
+            return;
+        }
+        postData('/posts/addpost', data)
+        .then(data => {
+            if(data.status == "ok"){
+                window.location.href = "/posts";
+            }else{
+                alert('Post adding failed...');
+            }
+
+        });
+
+    });
+</script>

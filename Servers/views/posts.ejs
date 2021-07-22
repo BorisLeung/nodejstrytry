@@ -1,0 +1,11 @@
+<h1>NodeJS Forum</h1>
+<hr>
+<% data.forEach(datum => { %>
+    <div style="border: 1px solid">
+        <h3><%= datum.title %></h3>
+        <h5><%= datum.content %></h5>
+        <p style="font-weight: 10; font-size: 10;">By <strong><i><%= datum.user %></i></strong> on <%= datum.time.toString() %></p>
+    </div>
+    <br>
+<% }) %>
+<button onclick="window.location.href = '/posts/addpost';">Add comment</button>

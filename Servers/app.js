@@ -1,19 +1,30 @@
 const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+
+// import Routes
+const postRoute = require('./routes/posts');
 
 // express app
 const app = express();
+const dbURL = "mongodb+srv://nodeuser:JyWqn0SZnGHC5LQt@cluster0.ar4ds.mongodb.net/db?retryWrites=true&w=majority";
 
-// register view engine
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
-
-// requests
 app.listen(3000);
-
 app.use(morgan('dev'));
+
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true})
+.then((result)=>console.log("Connected to db!"))
+.catch((err)=>console.log(err))
+
 
 app.get('/', (req, res)=>{
     res.render('index');
 });
+
+app.use('/posts', postRoute);
 
 app.get('/about', (req, res)=>{
     res.render('about');
