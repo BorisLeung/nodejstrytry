@@ -1,13 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+require('dotenv/config')
 
 // import Routes
 const postRoute = require('./routes/posts');
 
 // express app
 const app = express();
-const dbURL = "mongodb+srv://nodeuser:JyWqn0SZnGHC5LQt@cluster0.ar4ds.mongodb.net/db?retryWrites=true&w=majority";
+const dbURL = process.env.DB_CONNECTION;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
