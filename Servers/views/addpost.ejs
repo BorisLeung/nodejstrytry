@@ -1,14 +1,17 @@
 <a href="/" style="text-decoration: none; color: black"><h1>NodeJS Forum</h1></a>
 <div>
     <p>Title</p>
-    <input placeholder="Title of your input." id="title"></input>
+    <input placeholder="Title of your content." id="title" <% if(post){ %>value=<%- '"'+post.title+'"' %><% } %>></input>
 </div>
 <div>
     <p>Content</p>
-    <textarea id="content"></textarea>
+    <textarea id="content"><% if(post){ %><%= post.content %><% } %></textarea>
 </div>
 <br>
 <button id="submit">Submit</button>
+<% if(post){ %>
+    <button id="delete" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none; color: red;"><u>Delete</u></button>
+<% } %>
 
 <script>
     async function postData(url = '', data = {}) {
@@ -38,6 +41,19 @@
             alert("No content!");
             return;
         }
+
+        <% if(post){ %>
+        postData(<%- '"'+'/posts/edit/'+post._id+'"' %>, data)
+        .then(data => {
+            if(data.status == "ok"){
+                window.location.href = "/posts";
+            }else{
+                alert('Post editing failed...');
+            }
+
+        });
+
+        <% }else{ %>
         postData('/posts/addpost', data)
         .then(data => {
             if(data.status == "ok"){
@@ -47,6 +63,25 @@
             }
 
         });
+        <% } %>
 
     });
+    <% if(post){ %>
+    document.getElementById("delete").addEventListener("click", function() {
+        if (confirm("Confirm deletion?")){
+            fetch(<%- '"'+'/posts/edit/'+post._id+'"' %>, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            })
+            .then(response => response.json())
+            .then((data)=>{
+                if(data.status=="ok"){
+                    window.location.href="/posts";
+                }else{
+                    alert("Error deleting content!");
+                }
+            })
+        }
+    });
+    <% } %>
+
 </script>

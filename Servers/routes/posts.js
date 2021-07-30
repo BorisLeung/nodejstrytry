@@ -3,14 +3,15 @@ const router = express.Router();
 const Post = require('../models/Posts')
 const checkLogin = require('../utils');
 const User = require('../models/Users');
+const { isValidObjectId } = require('mongoose');
 
 router.get('/', (req, res)=>{
     if(!checkLogin(req)) return res.redirect('/');
-    console.log(req.session);
+    // console.log(req.session);
     Post.find().populate('user')
     .then((result)=>{
-        console.log(result);
-        res.render('posts', {data: result});
+        // console.log(result);
+        res.render('posts', {data: result, session: req.session});
     })
     .catch((err)=>{
         console.log(err);
@@ -18,28 +19,10 @@ router.get('/', (req, res)=>{
     })
 });
 
-// router.post('/', (req, res) => {
-//     const post = new Post({
-//         user: req.body.user,
-//         title: req.body.title,
-//         content: req.body.content,
-//     });
-//     // console.log(post);
-//     post.save()
-//     .then(data=>{
-//         console.log('success');
-//         res.json(data);
-//     })
-//     .catch(err=>{
-//         console.log('error');
-//         res.json({"message": err})
-//     });
-// });
-
 router.get('/addpost', (req, res)=>{
     if(!checkLogin(req)) return res.redirect('/');
     console.log(req.session);
-    res.render('addpost');
+    res.render('addpost', {post: ''});
 })
 
 router.post('/addpost', (req, res)=>{
@@ -63,6 +46,68 @@ router.post('/addpost', (req, res)=>{
             });
         })
     }
+})
+
+router.get('/edit/:pid', (req, res)=>{
+    if(!checkLogin(req)) return res.redirect('/');
+    var post_id = req.params.pid
+    if(isValidObjectId(post_id)) {
+        // console.log(post_id);
+        Post.findOne({_id: post_id}, (err, post)=>{
+            if(err) return console.log(err);
+            console.log("user: ",  post.user.toString(), "\nuser session id:", req.session.userid);
+            if(post){
+                if(post.user.toString() != req.session.userid) return res.redirect('/posts');
+                return res.render("addpost", {post: post});
+            } 
+            res.redirect('/posts')
+        });
+    }
+    else {
+        res.redirect('/posts');
+    }
+});
+
+router.post('/edit/:pid', (req, res)=>{
+    if(!checkLogin(req)) return;
+    var post_id = req.params.pid
+    if(isValidObjectId(post_id)) {
+        // console.log(post_id);
+        Post.findOne({_id: post_id}, (err, post)=>{
+            if(err) return console.log(err);
+            console.log("post: ", post);
+            if(post){
+                if(post.user.toString() != req.session.userid) return;
+                post.title = req.body.title;
+                post.content = req.body.content;
+                post.save()
+                .then(result=>{
+                    return res.json({'status': 'ok'});
+                })
+                .catch(err=>{
+                    console.log(err);
+                    return res.json({'status': 'error'})
+                })
+            }
+        });
+    }
+})
+
+router.delete('/edit/:pid', (req, res)=>{
+    if(!checkLogin(req)) return;
+    var post_id = req.params.pid
+    if(!isValidObjectId(post_id)) return;
+    Post.findOne({_id: post_id}, (err, post)=>{
+        if(post){
+            if(post.user.toString() != req.session.userid) return;
+            Post.deleteOne({_id: post_id}, (err)=>{
+                console.log(err)
+                return;
+            });
+            res.json({status: "ok"});
+        }
+    });
+    
 })
 
 module.exports = router;

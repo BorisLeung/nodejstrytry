@@ -4,15 +4,17 @@
             <h1 style="display: inline">NodeJS Forum</h1>
         </a>
     </span>
-    <span style="float:right"><a href="/logout" style="text-align: right; width: auto;">Logout</a></span>
+    <span style="float:right"><a href="/user/self">Account</a> / <a href="/logout"> Logout</a></span>
 </div>
 <hr>
 <% data.forEach(datum => { %>
     <div style="border: 1px solid">
         <h2><u><%= datum.title %></u></h2>
         <h5><%= datum.content %></h5>
-        <p style="font-weight: 10; font-size: 10;">By <strong><i><%= datum.user.username %></i></strong> on <%= datum.time.toString() %></p>
-        
+        <div>
+            <p style="font-weight: 10; font-size: 10; display: inline;">By <strong><% if(session.username==datum.user.username){ %><i>YOU</i><% }else{ %><%= datum.user.username %><% } %></strong> on <%= datum.time.toString() %></p>
+            <% if(session.username==datum.user.username){ %><a href=<%= "/posts/edit/"+datum._id %> style="float:right">Edit</a><% } %>
+        </div>
     </div>
     <br>
 <% }) %>

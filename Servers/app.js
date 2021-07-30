@@ -48,6 +48,7 @@ app.post('/', (req, res)=>{
         }else{
             sess = req.session;
             sess.username = req.body.username;
+            sess.userid = user._id;
             console.log("login success");
             res.json({status: 'ok'});
         }
