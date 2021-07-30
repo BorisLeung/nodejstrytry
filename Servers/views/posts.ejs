@@ -1,10 +1,18 @@
-<h1>NodeJS Forum</h1>
+<div>
+    <span>
+        <a href="/" style="text-decoration: none; color: black;">
+            <h1 style="display: inline">NodeJS Forum</h1>
+        </a>
+    </span>
+    <span style="float:right"><a href="/logout" style="text-align: right; width: auto;">Logout</a></span>
+</div>
 <hr>
 <% data.forEach(datum => { %>
     <div style="border: 1px solid">
-        <h3><%= datum.title %></h3>
+        <h2><u><%= datum.title %></u></h2>
         <h5><%= datum.content %></h5>
-        <p style="font-weight: 10; font-size: 10;">By <strong><i><%= datum.user %></i></strong> on <%= datum.time.toString() %></p>
+        <p style="font-weight: 10; font-size: 10;">By <strong><i><%= datum.user.username %></i></strong> on <%= datum.time.toString() %></p>
+        
     </div>
     <br>
 <% }) %>

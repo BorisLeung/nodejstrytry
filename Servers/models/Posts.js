@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 const PostSchema = mongoose.Schema({
     user: {
-        type: String,
-        default: 'Guest'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users"
     },
     title: {
         type: String,
