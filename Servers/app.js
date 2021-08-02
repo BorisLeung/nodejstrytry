@@ -5,12 +5,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('./models/Users.js');
 const checkLogin = require('./utils');
+const { SALT_ROUNDS } = require('./Constants')
 require('dotenv/config')
-
-const saltRounds = 11;
 
 // import Routes
 const postRoute = require('./routes/posts');
+const userRoute = require('./routes/users');
 
 // express app
 const app = express();
@@ -37,9 +37,9 @@ app.get('/', (req, res)=>{
 });
 
 app.post('/', (req, res)=>{
-    bcrypt.hash(req.body.password, saltRounds)
+    bcrypt.hash(req.body.password, SALT_ROUNDS)
     .then(hash=>{
-        console.log(hash);
+        // console.log(hash);
     });
 
     User.findOne({username: req.body.username}, (err, user)=>{
@@ -63,6 +63,7 @@ app.get('/logout', (req, res)=>{
 })
 
 app.use('/posts', postRoute);
+app.use('/user', userRoute);
 
 app.get('/register', (req, res)=>{
     if(!checkLogin(req)) return res.render('register');
@@ -76,14 +77,14 @@ app.post('/register', (req, res)=>{
         }else if(result){
             res.json({status: "error", err_msg: "Username already taken!"});
         }else{
-            bcrypt.hash(req.body.password, saltRounds).then((hash)=>{
+            bcrypt.hash(req.body.password, SALT_ROUNDS).then((hash)=>{
                 const user = new User({
                     username: req.body.username,
                     password: hash,
                     admin: false
                 })
                 user.save().then((data)=>{
-                    console.log(data);
+                    // console.log(data);
                     res.json({status: "ok"});
                 }).catch((err)=>{
                     console.log(err);
@@ -95,14 +96,14 @@ app.post('/register', (req, res)=>{
 });
 
 app.get('/createAdmin', (req, res)=>{
-    bcrypt.hash("admin123", saltRounds).then((hash)=>{
+    bcrypt.hash("admin123", SALT_ROUNDS).then((hash)=>{
         const user = new User({
             username: "admin",
             password: hash,
             admin: true
         })
         user.save().then((data)=>{
-            console.log(data);
+            // console.log(data);
         }).catch((err)=>{
             console.log(err);
         })
@@ -121,5 +122,5 @@ app.get('/about-us', (req, res)=>{
 
 app.use((req, res)=>{
     res.status(404).render('404');
-    console.log("404!");
+    // console.log("404!");
 });

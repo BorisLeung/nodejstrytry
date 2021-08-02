@@ -1,0 +1,1 @@
+module.exports = {SALT_ROUNDS: 11};

@@ -1,4 +1,12 @@
-<a href="/" style="text-decoration: none; color: black"><h1>NodeJS Forum</h1></a>
+<div>
+    <span>
+        <a href="/" style="text-decoration: none; color: black;">
+            <h1 style="display: inline">NodeJS Forum</h1>
+        </a>
+    </span>
+    <span style="float:right"><a href="/user/self">Account</a> / <a href="/logout"> Logout</a></span>
+</div>
+<hr>
 <div>
     <p>Title</p>
     <input placeholder="Title of your content." id="title" <% if(post){ %>value=<%- '"'+post.title+'"' %><% } %>></input>

@@ -1,0 +1,94 @@
+<div>
+    <span>
+        <a href="/" style="text-decoration: none; color: black;">
+            <h1 style="display: inline">NodeJS Forum</h1>
+        </a>
+    </span>
+    <span style="float:right"><a href="/user/self">Account</a> / <a href="/logout"> Logout</a></span>
+</div>
+<hr>
+<h2>Account</h2>
+<!-- <form> -->
+<table>
+    <tr>
+        <td>
+            <p style="display:inline">Username</p>
+        </td>
+        <td>
+            <input placeholder="Username" <% if (username){ %>value=<%- "'"+username+"'" %><% } %> id="username"></input></br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="display:inline">Password</p>
+        </td>
+        <td>
+            <input placeholder="Password(required)" type="password" id="password" required></input></br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="display:inline">New password</p>
+        </td>
+        <td>
+            <input placeholder="New password" type="password" id="new_password"></input></br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="display:inline">Confrim password</p>
+        </td>
+        <td>
+            <input placeholder="Confirm password" type="password" id="confirm_password"></input></br>
+        </td>
+    </tr>
+</table>
+<button id="submit">Submit</button>
+<!-- </form> -->
+
+
+<script>
+    async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    var data = {};
+    document.getElementById("submit").addEventListener("click", function() {
+        var new_password = document.getElementById('new_password').value;
+        var confirm_password = document.getElementById('confirm_password').value;
+        if((new_password || confirm_password) && new_password!=confirm_password) return alert("New passwords do not match!")
+        
+        data = {
+            "username": document.getElementById('username').value,
+            "password": document.getElementById('password').value,
+            "new_password": document.getElementById('new_password').value,
+        };
+
+        postData("/user/self/change", data)
+        .then(data => {
+            console.log(data);
+            if(data.status == "ok"){
+                alert("Account update successful");
+                window.location.href = "/";
+            }else{
+                alert(data.err_msg);
+            }
+
+        });
+    });
+
+</script>
