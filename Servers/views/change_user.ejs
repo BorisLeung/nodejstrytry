@@ -1,12 +1,4 @@
-<div>
-    <span>
-        <a href="/" style="text-decoration: none; color: black;">
-            <h1 style="display: inline">NodeJS Forum</h1>
-        </a>
-    </span>
-    <span style="float:right"><a href="/user/self">Account</a> / <a href="/logout"> Logout</a></span>
-</div>
-<hr>
+<%- include("partials/header") %>
 <h2>Account</h2>
 <!-- <form> -->
 <table>
@@ -15,9 +7,10 @@
             <p style="display:inline">Username</p>
         </td>
         <td>
-            <input placeholder="Username" <% if (username){ %>value=<%- "'"+username+"'" %><% } %> id="username"></input></br>
+            <input placeholder="Username" value=<%- "'"+username+"'" %> id="username"></input></br>
         </td>
     </tr>
+    <% if(username==session.username){ %>
     <tr>
         <td>
             <p style="display:inline">Password</p>
@@ -26,6 +19,7 @@
             <input placeholder="Password(required)" type="password" id="password" required></input></br>
         </td>
     </tr>
+    <% } %>
     <tr>
         <td>
             <p style="display:inline">New password</p>
@@ -74,11 +68,13 @@
         
         data = {
             "username": document.getElementById('username').value,
+            <% if (username==session.username){ %>
             "password": document.getElementById('password').value,
+            <% } %>
             "new_password": document.getElementById('new_password').value,
         };
 
-        postData("/user/self/change", data)
+        postData(<% if(username == session.username){ %>"/user/self/change"<% }else{ %> <%- "'/user/"+userid+"/change'" %> <% } %>, data)
         .then(data => {
             console.log(data);
             if(data.status == "ok"){

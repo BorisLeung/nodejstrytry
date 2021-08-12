@@ -21,8 +21,8 @@ router.get('/', (req, res)=>{
 
 router.get('/addpost', (req, res)=>{
     if(!checkLogin(req)) return res.redirect('/');
-    console.log(req.session);
-    res.render('addpost', {post: ''});
+    // console.log(req.session);
+    res.render('addpost', {post: '', session: req.session});
 })
 
 router.post('/addpost', (req, res)=>{
@@ -58,7 +58,7 @@ router.get('/edit/:pid', (req, res)=>{
             console.log("user: ",  post.user.toString(), "\nuser session id:", req.session.userid);
             if(post){
                 if(post.user.toString() != req.session.userid) return res.redirect('/posts');
-                return res.render("addpost", {post: post});
+                return res.render("addpost", {post: post, session: req.session});
             } 
             res.redirect('/posts')
         });

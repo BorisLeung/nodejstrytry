@@ -49,6 +49,7 @@ app.post('/', (req, res)=>{
             sess = req.session;
             sess.username = req.body.username;
             sess.userid = user._id;
+            sess.admin = user.admin;
             console.log("login success");
             res.json({status: 'ok'});
         }
@@ -112,13 +113,6 @@ app.get('/createAdmin', (req, res)=>{
     );
 })
 
-app.get('/about', (req, res)=>{
-    res.render('about');
-});
-
-app.get('/about-us', (req, res)=>{
-    res.redirect('/about');
-});
 
 app.use((req, res)=>{
     res.status(404).render('404');
