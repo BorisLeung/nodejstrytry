@@ -8,7 +8,7 @@ const { isValidObjectId } = require('mongoose');
 router.get('/', (req, res)=>{
     if(!checkLogin(req)) return res.redirect('/');
     // console.log(req.session);
-    Post.find().populate('user')
+    Post.find().sort({time: -1}).populate('user')
     .then((result)=>{
         // console.log(result);
         res.render('posts', {data: result, session: req.session});
@@ -57,7 +57,7 @@ router.get('/edit/:pid', (req, res)=>{
             if(err) return console.log(err);
             console.log("user: ",  post.user.toString(), "\nuser session id:", req.session.userid);
             if(post){
-                if(post.user.toString() != req.session.userid) return res.redirect('/posts');
+                if(post.user.toString() != req.session.userid && !req.session.admin) return res.redirect('/posts');
                 return res.render("addpost", {post: post, session: req.session});
             } 
             res.redirect('/posts')
@@ -77,7 +77,7 @@ router.post('/edit/:pid', (req, res)=>{
             if(err) return console.log(err);
             console.log("post: ", post);
             if(post){
-                if(post.user.toString() != req.session.userid) return;
+                if(post.user.toString() != req.session.userid && !req.session.admin) return;
                 post.title = req.body.title;
                 post.content = req.body.content;
                 post.save()

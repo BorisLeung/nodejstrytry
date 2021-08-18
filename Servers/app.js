@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -23,8 +24,11 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 app.use(morgan('dev'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true})
 .then((result)=>console.log("Connected to db!"))

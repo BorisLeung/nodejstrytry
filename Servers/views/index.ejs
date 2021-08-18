@@ -1,36 +1,90 @@
-<a href="/" style="text-decoration: none; color: black"><h1>NodeJS Forum</h1></a>
-<p>Welcome to the nodeJS forum.</p>
-<input placeholder="Username" id="username" required></input><br/>
-<input placeholder="Password" id="password" required type="password"></input><br/>
-<button id="login">Login</button>
-<a href="/register">Register</a>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link rel="icon" href="/chat.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
 
-<script>
-    async function postData(url = '', data = {}) {
-    // Default options are marked with *
-    const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-    }
-    var data = {};
-    document.getElementById("login").addEventListener("click", function() {
-        data = {
-            "username": document.getElementById('username').value,
-            "password": document.getElementById('password').value
-        };
+  <body>
+    <main>
+        <center>
+            <a href="/" style="text-decoration: none; color: black"><h2 class="indigo-text">NodeJS Forum</h2></a>
+          <div class="section"></div>
+    
+          <div class="section"></div>
+    
+          <div class="container">
+            <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+    
+                <div class='row'>
+                  <div class='col s12'>
+                  </div>
+                </div>
+    
+                <div class='row'>
+                  <div class='input-field col s12'>
+                    <input type="text" id='username' required />
+                    <label for='username'>Username</label>
+                  </div>
+                </div>
+    
+                <div class='row'>
+                  <div class='input-field col s12'>
+                    <input class='validate' type='password' name='password' id='password' required />
+                    <label for='password'>Password</label>
+                  </div>
+                  <label style='float: right;'>
+                                    <a class='pink-text' href='#!' onclick="alert('haha not implemented yet :P')"><b>Forgot Password?</b></a>
+                                </label>
+                </div>
+    
+                <br />
+                <center>
+                  <div class='row'>
+                    <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo' id="login">Login</button>
+                  </div>
+                </center>
+            </div>
+          </div>
+          <a href="/register">Create account</a>
+        </center>
+    
+        <div class="section"></div>
+        <div class="section"></div>
+      </main>
 
-        postData('/', data)
-        .then(data => {
-            if(data.status == "ok"){
-                window.location.href = "/posts";
-            }else{
-                alert('Username or password incorrect.');
-            }
+    <script>
+        async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) 
         });
-    });
-</script>
+        return response.json();
+        }
+        var data = {};
+        document.getElementById("login").addEventListener("click", function() {
+            data = {
+                "username": document.getElementById('username').value,
+                "password": document.getElementById('password').value
+            };
+
+            postData('/', data)
+            .then(data => {
+                if(data.status == "ok"){
+                    window.location.href = "/posts";
+                }else{
+                    alert('Username or password incorrect.');
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+  </body>
+</html>
+

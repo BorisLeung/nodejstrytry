@@ -1,42 +1,116 @@
-<a href="/" style="text-decoration: none; color: black"><h1>NodeJS Forum</h1></a>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link rel="icon" href="/chat.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <main>
+        <center>
+            <a href="/" style="text-decoration: none; color: black"><h2 class="indigo-text">NodeJS Forum</h2></a>
+            <div class="container">
+                <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+        
+                    <div class='row'>
+                    <div class='input-field col s12'>
+                        <input type="text" id='username' required />
+                        <label for='username'>Username</label>
+                    </div>
+                    </div>
+        
+                    <div class='row'>
+                    <div class='input-field col s12'>
+                        <input class='validate' type='password' name='password' id='password' required />
+                        <label for='password'>Password</label>
+                    </div>
+                    </div>
+                    <div class='row'>
+                    <div class='input-field col s12'>
+                        <input type='password' name='password2' id='password2' required />
+                        <label for='password2' data-error="Password not match" data-success="Password Match">Confirm password</label>
+                    </div>
+
+                    </div>
+        
+                    <br />
+                    <center>
+                    <div class='row'>
+                        <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo' id="register">Register</button>
+                    </div>
+                    </center>
+                </div>
+            </div>
+
+          
+        </center>
+    
+        <div class="section"></div>
+        <div class="section"></div>
+      </main>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script>
+        $("#password").on("focusout", function (e) {
+            if ($(this).val() != $("#password2").val()) {
+                $("#password2").removeClass("valid").addClass("invalid");
+            } else {
+                $("#password2").removeClass("invalid").addClass("valid");
+            }
+        });
+
+    
+        $("#password2").on("keyup", function (e) {
+            if ($("#password").val() != $(this).val()) {
+                $(this).removeClass("valid").addClass("invalid");
+            } else {
+                $(this).removeClass("invalid").addClass("valid");
+            }
+        });
+    
+        async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+        }
+        var data = {};
+        document.getElementById("register").addEventListener("click", function() {
+            password = document.getElementById("password").value;
+            confirm_password = document.getElementById("password2").value;
+            if(password!=confirm_password){
+                alert("Passwords do not match!");
+                return;
+            }
+            data = {
+                "username": document.getElementById('username').value,
+                "password": document.getElementById('password').value
+            };
+    
+            postData('/register', data)
+            .then(data => {
+                if(data.status == "ok"){
+                    alert("User creation successful!");
+                    window.location.href = "/";
+                }else{
+                    alert(data.err_msg);
+                }
+            });
+        });
+    </script>      
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    </body>
+</html>
+
+<!-- <a href="/" style="text-decoration: none; color: black"><h1>NodeJS Forum</h1></a>
 <h3>Register page</h3>
 <input placeholder="Username" id="username" required></input><br/>
 <input placeholder="Password" id="password" required type="password"></input><br/>
 <input placeholder="Confirm password" id="password2" required type="password"></input><br/>
-<button id="register">Register</button>
+<button id="register">Register</button> -->
 
-<script>
-    async function postData(url = '', data = {}) {
-    const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-    }
-    var data = {};
-    document.getElementById("register").addEventListener("click", function() {
-        password = document.getElementById("password").value;
-        confirm_password = document.getElementById("password2").value;
-        if(password!=confirm_password){
-            alert("Passwords do not match!");
-            return;
-        }
-        data = {
-            "username": document.getElementById('username').value,
-            "password": document.getElementById('password').value
-        };
-
-        postData('/register', data)
-        .then(data => {
-            if(data.status == "ok"){
-                alert("User creation successful!");
-                window.location.href = "/";
-            }else{
-                alert(data.err_msg);
-            }
-        });
-    });
-</script>

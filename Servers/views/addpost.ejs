@@ -1,17 +1,41 @@
 <%- include("partials/header") %>
-<div>
+<div class="container-flex">
+    <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title">
+                <div class='row'>
+                    <div class='input-field col s12'>
+                        <input type="text" id='title' required  <% if(post){ %>value=<%- '"'+post.title+'"' %><% } %>/>
+                        <label for='title'>Title</label>
+                    </div>
+                </div>
+              </span>
+              <blockquote><textarea id="content"><% if(post){ %><%= post.content %><% } %></textarea></blockquote>
+            </div>
+          </div>
+        <button id="submit" class="btn waves-effect waves-light indigo">Submit</button>
+        <% if(post){ %>
+            <button id="delete" class="waves-effect waves-red btn-flat" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none; color: red;"><u>Delete</u></button>
+        <% } %>
+        </div>
+      </div>
+      
+</div>
+
+
+<!-- <div>
     <p>Title</p>
     <input placeholder="Title of your content." id="title" <% if(post){ %>value=<%- '"'+post.title+'"' %><% } %>></input>
 </div>
 <div>
     <p>Content</p>
     <textarea id="content"><% if(post){ %><%= post.content %><% } %></textarea>
-</div>
-<br>
-<button id="submit">Submit</button>
-<% if(post){ %>
-    <button id="delete" style="background-color: Transparent;background-repeat:no-repeat;border: none;cursor:pointer;overflow: hidden;outline:none; color: red;"><u>Delete</u></button>
-<% } %>
+</div> -->
+
+
+
 
 <script>
     async function postData(url = '', data = {}) {
@@ -85,3 +109,4 @@
     <% } %>
 
 </script>
+<%- include("partials/footer") %>

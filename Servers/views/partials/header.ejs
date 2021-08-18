@@ -1,12 +1,24 @@
-<div>
-    <span>
-        <a href="/" style="text-decoration: none; color: black;">
-            <h1 style="display: inline">NodeJS Forum</h1>
-        </a>
-    </span>
-    <span style="float:right">
-        <% if(session.admin){ %><a href="/user/all">Users</a> / <% } %>
-        <a href="/user/self">Account</a> / <a href="/logout"> Logout</a>
-    </span>
-</div>
-<hr>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    <link rel="icon" href="/chat.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  </head>
+
+  <body style="background-color: #f4f4f4;">
+    <div class="navbar-fixed">
+        <nav class="white">
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo grey-text text-darken-4">NodeJS Forum</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down ">
+                <% if(session.admin){ %><li><a href="/user/all" class="grey-text text-darken-4">Users</a></li><% } %>
+                <li><a href="/user/self" class="grey-text text-darken-4">Account</a></li>
+                <li><a href="/logout" class="grey-text text-darken-4"> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    

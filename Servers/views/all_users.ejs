@@ -1,45 +1,39 @@
 <%- include("partials/header") %>
-<style>
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
-    
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-    
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
-    </style>
-
-<table style="width: 100%;">
-    <tr>
-        <th>
-            Username
-        </th>
-        <th>
-            Account type
-        </th>
-        <th>
-            Action
-        </th>
-    </tr>
-    <% users.forEach(user=>{ %>
-    <tr>
-        <td>
-            <u><%= user.username %><% if(user.username == session.username){ %><i style="font-size: 6px;">[YOU]</i><% } %></u>
-        </td>
-        <td>
-            <% if(user.admin){ %>Admin<% }else{ %>Normal user<% } %>
-        </td>
-        <td>
-            <% if(session.username != user.username){ %><a href=<%= "/user/"+user._id %>>Manage</a><% } %>
-        </td>
-    </tr>
-    <% }) %>
-</table>
+<div class="container col s4">
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Users</span>
+                    <table style="width: 100%;" class="striped ">
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Account type
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                        <% users.forEach(user=>{ %>
+                        <tr>
+                            <td>
+                                <u><%= user.username %><% if(user.username == session.username){ %><i style="font-size: 6px;">[YOU]</i><% } %></u>
+                            </td>
+                            <td>
+                                <% if(user.admin){ %>Admin<% }else{ %>Normal user<% } %>
+                            </td>
+                            <td>
+                                <% if(session.username != user.username){ %><a class="waves-effect waves-grey btn-flat blue-text" href=<%= "/user/"+user._id %>>Manage</a><% } %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </table>
+                </div>
+            </div> 
+        </div>  
+    </div>  
+</div>  
+<%- include("partials/footer") %>
