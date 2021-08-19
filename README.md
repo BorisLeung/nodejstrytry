@@ -59,5 +59,5 @@ nodemon app
 #### `user/:user_id/change` User's account alteration
 > Allow admins to edit other user's account by id
 
-#### `user/all/` Users list
+#### `user/all` Users list
 > Displays all users in a list for admins
