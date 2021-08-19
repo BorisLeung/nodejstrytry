@@ -102,17 +102,24 @@ app.post('/register', (req, res)=>{
 
 app.get('/createAdmin', (req, res)=>{
     bcrypt.hash("admin123", SALT_ROUNDS).then((hash)=>{
-        const user = new User({
-            username: "admin",
-            password: hash,
-            admin: true
+        User.findOne({username: "admin"}, (err, user)=>{
+            if(err) return console.log(err);
+            if(!user){
+                user = new User({
+                    username: "admin",
+                    password: hash,
+                    admin: true
+                })
+            }else{
+                user.password = hash;
+            }
+            user.save().then((data)=>{
+                // console.log(data);
+            }).catch((err)=>{
+                console.log(err);
+            })
+            res.redirect('/');
         })
-        user.save().then((data)=>{
-            // console.log(data);
-        }).catch((err)=>{
-            console.log(err);
-        })
-        res.redirect('/');
     }
     );
 })

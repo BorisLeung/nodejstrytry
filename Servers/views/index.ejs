@@ -10,7 +10,7 @@
   <body>
     <main>
         <center>
-            <a href="/" style="text-decoration: none; color: black"><h2 class="indigo-text">NodeJS Forum</h2></a>
+          <a href="/" style="text-decoration: none; color: black"><h2 class="indigo-text">NodeJS Forum</h2></a>
           <div class="section"></div>
     
           <div class="section"></div>
@@ -56,32 +56,34 @@
       </main>
 
     <script>
-        async function postData(url = '', data = {}) {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) 
-        });
-        return response.json();
-        }
-        var data = {};
-        document.getElementById("login").addEventListener("click", function() {
-            data = {
-                "username": document.getElementById('username').value,
-                "password": document.getElementById('password').value
-            };
 
-            postData('/', data)
-            .then(data => {
-                if(data.status == "ok"){
-                    window.location.href = "/posts";
-                }else{
-                    alert('Username or password incorrect.');
-                }
-            });
-        });
+
+      async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data) 
+      });
+      return response.json();
+      }
+      var data = {};
+      document.getElementById("login").addEventListener("click", function() {
+          data = {
+              "username": document.getElementById('username').value,
+              "password": document.getElementById('password').value
+          };
+
+          postData('/', data)
+          .then(data => {
+              if(data.status == "ok"){
+                  window.location.href = "/posts";
+              }else{
+                  alert('Username or password incorrect.');
+              }
+          });
+      });
     </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>

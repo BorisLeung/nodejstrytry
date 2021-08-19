@@ -76,10 +76,10 @@ router.post('/self/change', (req, res)=>{
 // }
 
 router.get('/all', (req, res)=>{
-    // if(!checkLogin(req)) return res.redirect('/');
-    // if(!req.session.admin) return res.redirect('/');
+    if(!checkLogin(req)) return res.redirect('/');
+    if(!req.session.admin) return res.redirect('/');
     console.log(req.session.userid);
-    User.find().then((result)=>{
+    User.find().sort({username: 1}).then((result)=>{
         Posts.countDocuments({user: req.session.userid}, (err, c)=>{
             return res.render('all_users', {session: req.session, users: result});
         });
@@ -87,8 +87,8 @@ router.get('/all', (req, res)=>{
 });
 
 router.get('/:userid', (req, res)=>{
-    // if(!checkLogin(req)) return res.redirect('/');
-    // if(!req.session.admin) return res.redirect('/');
+    if(!checkLogin(req)) return res.redirect('/');
+    if(!req.session.admin) return res.redirect('/');
     User.findOne({_id: req.params.userid}, (err, user)=>{
         if(err) return console.log(err);
         if(!user) return res.redirect("/");
@@ -100,8 +100,8 @@ router.get('/:userid', (req, res)=>{
 })
 
 router.get('/:userid/change', (req, res)=>{
-    // if(!checkLogin(req)) return res.redirect('/');
-    // if(!req.session.admin) return res.redirect('/');
+    if(!checkLogin(req)) return res.redirect('/');
+    if(!req.session.admin) return res.redirect('/');
     User.findOne({_id: req.params.userid}, (err, user)=>{
         if(err) return console.log(err);
         if(!user) return res.redirect("/");
@@ -110,8 +110,8 @@ router.get('/:userid/change', (req, res)=>{
 })
 
 router.post('/:userid/change', (req, res)=>{
-    // if(!checkLogin(req)) return res.redirect('/');
-    // if(!req.session.admin) return res.redirect('/');
+    if(!checkLogin(req)) return res.redirect('/');
+    if(!req.session.admin) return res.redirect('/');
     User.findOne({_id: req.params.userid}, (err, user)=>{
         if(err) return console.log(err);
         if(!user) return res.json({status: "error", err_msg: "Error finding user with the given id."});
